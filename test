@@ -1,6 +1,13 @@
+<!-- Multi
+     Line
+     Comment
+     -->
+
 <tag>
     <param>
         <value1>v123</value1>
-        <value2>v456</value2>
+        <param>
+            <value1>v1 2 3</value1>
+        </param>
     </param>
 </tag>

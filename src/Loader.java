@@ -20,7 +20,6 @@ public class Loader implements Runnable {
 
     @Override
     public void run() {
-        long _start = System.currentTimeMillis();
         ArrayList<String> values = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
         int c, i = 0; // ASCII character value ; adjacency key
@@ -28,13 +27,28 @@ public class Loader implements Runnable {
             fileReader = new FileReader(parsable, utf8);
             reader = new BufferedReader(fileReader);
             while (reader.ready()) {
+                reader.mark(1);
                 c = reader.read();
-                if (Character.isWhitespace(c)) continue;
-                if (c == 33) {
-                    reader.readLine();
-                    continue;
+                if (c == 10 || c == 13 || c == 32 || c == 9) continue;
+                //On < check if next is !
+                if (c == 60) {
+                    int fc = reader.read();
+                    if (fc == 33) { // if ! remove line
+                        while (reader.ready()) {
+                            fc = reader.read();
+                            if (fc == 62) {
+                                reader.readLine();
+                                break;
+                            }
+                        }
+                    } else {
+                        builder.append((char) c);
+                        builder.append((char) fc);
+                        continue;
+                    }
                 }
-                if (c == 62) {
+                //Assume that it's always tag
+                if (c == 62) { // when it ends>
                     builder.append((char) c);
                     values.add(builder.toString());
                     builder = new StringBuilder();
@@ -59,13 +73,11 @@ public class Loader implements Runnable {
                         ++i;
                         values = new ArrayList<>();
                     }
-                } else {
+                } else if (c != 60) {
                     builder.append((char) c);
                 }
             }
             AdjacencyList.forEach((k, v) -> System.out.printf("Key: %s, Value: %s\n", k, v));
-            long _end = System.currentTimeMillis();
-            System.out.printf("\nSpeed: %d ms\n\n", _end - _start);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
