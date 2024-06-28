@@ -1,0 +1,8 @@
+<tag>
+    <param>
+        <value1>v123</value1>
+        <nestParam>
+            <value2>v456</value2>
+        </nestParam>
+    </param>
+</tag>

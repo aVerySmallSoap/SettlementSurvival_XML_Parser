@@ -18,6 +18,10 @@ public class Loader implements Runnable {
         this.parsable = parsable;
     }
 
+    public HashMap<Integer, ArrayList<String>> getXMLTree() {
+        return AdjacencyList;
+    }
+
     @Override
     public void run() {
         ArrayList<String> values = new ArrayList<>();
@@ -77,7 +81,6 @@ public class Loader implements Runnable {
                     builder.append((char) c);
                 }
             }
-            AdjacencyList.forEach((k, v) -> System.out.printf("Key: %s, Value: %s\n", k, v));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
